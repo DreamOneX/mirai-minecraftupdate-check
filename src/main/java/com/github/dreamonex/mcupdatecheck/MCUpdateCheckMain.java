@@ -1,31 +1,41 @@
 // Mirai Minecraft Update Checker
-// 	Copyright (C) 2022 DreamOneX
+//  Copyright (C) 2022 DreamOneX
 //
-// 	This program is free software: you can redistribute it and/or modify
-// 	it under the terms of the GNU Affero General Public License as
-// 	published by the Free Software Foundation, either version 3 of the
-// 	License, or any later version.
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU Affero General Public License as
+//  published by the Free Software Foundation, either version 3 of the
+//  License, or any later version.
 //
-// 	This program is distributed in the hope that it will be useful,
-// 	but WITHOUT ANY WARRANTY; without even the implied warranty of
-// 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// 	GNU Affero General Public License for more details.
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Affero General Public License for more details.
 //
-// 	You should have received a copy of the GNU Affero General Public License
-// 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
+//  You should have received a copy of the GNU Affero General Public License
+//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package com.github.dreamonex.mcupdatecheck;
 
+import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.console.command.CommandManager;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
+import net.mamoe.mirai.event.GlobalEventChannel;
+import net.mamoe.mirai.event.events.BotOfflineEvent;
+import net.mamoe.mirai.event.events.BotOnlineEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import com.github.dreamonex.mcupdatecheck.command.CheckMCCommand;
 import com.github.dreamonex.mcupdatecheck.command.SubscribeCommand;
 import com.github.dreamonex.mcupdatecheck.data.SubscribeData;
+import com.github.dreamonex.mcupdatecheck.handlers.BotOfflineHandler;
+import com.github.dreamonex.mcupdatecheck.handlers.BotOnlineHandler;
 
 public final class MCUpdateCheckMain extends JavaPlugin {
     public static final MCUpdateCheckMain INSTANCE = new MCUpdateCheckMain();
+    public List<Bot> bots = new ArrayList<Bot>();
     private MCUpdateCheckMain() {
         super(new JvmPluginDescriptionBuilder("com.github.dreamonex.mcupdatecheck", "0.0.1")
               .name("MinecraftUpdateChecker")
@@ -39,5 +49,13 @@ public final class MCUpdateCheckMain extends JavaPlugin {
         CommandManager.INSTANCE.registerCommand(CheckMCCommand.INSTANCE, false);
         CommandManager.INSTANCE.registerCommand(SubscribeCommand.INSTANCE, false);
         reloadPluginData(SubscribeData.INSTANCE);
+        GlobalEventChannel.INSTANCE.subscribeAlways(
+            BotOnlineEvent.class,
+            BotOnlineHandler::handle
+        );
+        GlobalEventChannel.INSTANCE.subscribeAlways(
+            BotOfflineEvent.class,
+            BotOfflineHandler::handle
+        );
     }
 }
