@@ -48,4 +48,12 @@ public class DataManager {
         Value<String> plugindata = SubscribeData.INSTANCE.latestMinecraftSnapshot;
         plugindata.set(data);
     }
+    public static Boolean getFirstRun() {
+        Value<Boolean> plugindata = SubscribeData.INSTANCE.firstRun;
+        return plugindata.get();
+    }
+    public static void setFirstRun(Boolean data) {
+        Value<Boolean> plugindata = SubscribeData.INSTANCE.firstRun;
+        plugindata.set(data);
+    }
 }

@@ -29,8 +29,9 @@ import net.mamoe.mirai.console.data.java.JavaAutoSavePluginData;
 public final class SubscribeData extends JavaAutoSavePluginData {
     public static final SubscribeData INSTANCE = new SubscribeData();
 
-    public final Value<String> latestMinecraftRelease = value("latestMinecraftRelease", "1.19");
-    public final Value<String> latestMinecraftSnapshot = value("latestMinecraftSnapshot", "11w45a");
+    public final Value<Boolean> firstRun = value("FirstRun", true);
+    public final Value<String> latestMinecraftRelease = value("LatestMinecraftRelease", "1.19");
+    public final Value<String> latestMinecraftSnapshot = value("LatestMinecraftSnapshot", "11w45a");
     public final Value<Map<Long,List<CheckType>>> groups = typedValue(
                 "groups",
     createKType(Map.class, createKType(Long.class), createKType(List.class, createKType(CheckType.class))), new HashMap<Long, List<CheckType>>() {

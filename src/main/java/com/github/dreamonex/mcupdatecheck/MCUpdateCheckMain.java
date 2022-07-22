@@ -24,14 +24,19 @@ import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.events.BotOfflineEvent;
 import net.mamoe.mirai.event.events.BotOnlineEvent;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.dreamonex.mcupdatecheck.check.MinecraftCheckHelper;
 import com.github.dreamonex.mcupdatecheck.command.CheckMCCommand;
 import com.github.dreamonex.mcupdatecheck.command.SubscribeCommand;
 import com.github.dreamonex.mcupdatecheck.data.SubscribeData;
 import com.github.dreamonex.mcupdatecheck.handlers.BotOfflineHandler;
 import com.github.dreamonex.mcupdatecheck.handlers.BotOnlineHandler;
+import com.github.dreamonex.mcupdatecheck.timer.CheckTimer;
+import com.github.dreamonex.mcupdatecheck.utils.CheckType;
+import com.github.dreamonex.mcupdatecheck.utils.DataManager;
 
 public final class MCUpdateCheckMain extends JavaPlugin {
     public static final MCUpdateCheckMain INSTANCE = new MCUpdateCheckMain();
@@ -65,11 +70,36 @@ public final class MCUpdateCheckMain extends JavaPlugin {
         return this.bots;
     }
 
+    private void checkFirstRun() {
+        if (DataManager.getFirstRun()) {
+            try {
+                DataManager.setLatestMinecraftRelease(
+                    MinecraftCheckHelper.getVersion(CheckType.MC_RELEASE)
+                );
+                DataManager.setLatestMinecraftSnapshot(
+                    MinecraftCheckHelper.getVersion(CheckType.MC_SNAPSHOT)
+                );
+            } catch (IOException e) {
+                getLogger().error(e);
+                getLogger().error("网络错误，正在重试");
+                checkFirstRun();
+            }
+            DataManager.setFirstRun(false);
+        }
+    }
     @Override
     public void onEnable() {
         CommandManager.INSTANCE.registerCommand(CheckMCCommand.INSTANCE, false);
         CommandManager.INSTANCE.registerCommand(SubscribeCommand.INSTANCE, false);
         reloadPluginData(SubscribeData.INSTANCE);
+        checkFirstRun();
+        CheckTimer checker = new CheckTimer();
+        GlobalEventChannel.INSTANCE.subscribeOnce(
+            BotOnlineEvent.class,
+            event -> {
+                checker.go();
+            }
+        );
         GlobalEventChannel.INSTANCE.subscribeAlways(
             BotOnlineEvent.class,
             BotOnlineHandler::handle

@@ -12,36 +12,52 @@ import com.github.dreamonex.mcupdatecheck.utils.CheckType;
 import com.github.dreamonex.mcupdatecheck.utils.DataManager;
 
 import net.mamoe.mirai.Bot;
+import net.mamoe.mirai.contact.Group;
+import net.mamoe.mirai.message.data.MessageChain;
+import net.mamoe.mirai.message.data.MessageChainBuilder;
 
 public class CheckTimer {
     private Timer timer = new Timer();
-    private static List<TimerTask> tasks;
-    /* private class CheckMCTask extends TimerTask { */
-    /*     private Map<Long, List<CheckType>> groups = DataManager.getGroups(); */
-    /*     private Map<Long, List<CheckType>> getGroups() { */
-    /*         return DataManager.getGroups(); */
-    /*     } */
-    /*     private void checkMCRelease() { */
-    /*         String latestold = DataManager.getLatestMinecraftRelease(); */
-    /*         String latest; */
-    /*         try { */
-    /*             latest = MinecraftCheckHelper.getVersion(CheckType.MC_RELEASE); */
-    /*         } catch (IOException e) { */
-    /*             MCUpdateCheckMain.INSTANCE.getLogger().error("疑似网络问题", e); */
-    /*             return; */
-    /*         } */
-    /*         if (latestold.equals(latest)) return; */
-    /*         for (Bot bot : MCUpdateCheckMain.INSTANCE.getBots()) { */
-    /*             for (Map.Entry<Long, List<CheckType>> group : this.groups.entrySet()) { */
-    /*                 if (group.getValue().contains(CheckType.MC_RELEASE)) { */
-    /*                     bot.getGroup(group.getKey()).sendMessage("mojang 更新了"); */
-    /*                     //more details and more checkers */
-    /*                 } */
-    /*             } */
-    /*         } */
-    /*     } */
-    /*     public void run() { */
-    /*     } */
-    /* } */
-    /* private class CheckTasks */
+    private class CheckMCTask extends TimerTask {
+        private Map<Long, List<CheckType>> groups = DataManager.getGroups();
+        private Map<Long, List<CheckType>> freshGroups() {
+            return DataManager.getGroups();
+        }
+        private void checkMCRelease() {
+            String latestold = DataManager.getLatestMinecraftRelease();
+            String latest;
+            try {
+                latest = MinecraftCheckHelper.getVersion(CheckType.MC_RELEASE);
+            } catch (IOException e) {
+                MCUpdateCheckMain.INSTANCE.getLogger().error("疑似网络问题", e);
+                return;
+            }
+            if (latestold.equals(latest)) return;
+            DataManager.setLatestMinecraftRelease(latest);
+            for (Bot bot : MCUpdateCheckMain.INSTANCE.getBots()) {
+                for (Map.Entry<Long, List<CheckType>> group : this.groups.entrySet()) {
+                    Group target = bot.getGroup(group.getKey());
+                    if (target == null) continue;
+                    if (group.getValue().contains(CheckType.MC_RELEASE)) {
+                        MessageChain chain = new MessageChainBuilder()
+                            .append("Minecraft发布了新的Release版本")
+                            .append("版本号为: " + latest)
+                            .build();
+                        target.sendMessage(chain);
+                    }
+                }
+            }
+        }
+        public void run() {
+            freshGroups();
+            checkMCRelease();
+        }
+    }
+    public CheckTimer() {
+        this.timer = new Timer();
+    }
+
+    public void go() {
+        this.timer.schedule(new CheckMCTask(), 1000, 300000);
+    }
 }
