@@ -22,6 +22,7 @@ import java.io.IOException;
 import com.fasterxml.jackson.databind.*;
 import com.github.dreamonex.mcupdatecheck.MCUpdateCheckMain;
 import com.github.dreamonex.mcupdatecheck.utils.CheckType;
+import com.github.dreamonex.mcupdatecheck.utils.DataManager;
 
 public class MinecraftCheckHelper {
     public static String getVersion(CheckType ver) throws IOException {
@@ -30,7 +31,7 @@ public class MinecraftCheckHelper {
             url = new URL("https://launchermeta.mojang.com/mc/game/version_manifest.json");
         } catch (MalformedURLException e) {
             MCUpdateCheckMain.INSTANCE.getLogger().error(e);
-            return "我超！神奇的事情发生了";
+            return DataManager.getLatestMinecraftRelease();
         }
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode;
@@ -38,7 +39,7 @@ public class MinecraftCheckHelper {
         JsonNode node = jsonNode.get("latest");
         switch(ver) {
             case MC_RELEASE:
-                node.get("release").asText();
+                return node.get("release").asText();
             case MC_SNAPSHOT:
                 return node.get("snapshot").asText();
             default:
