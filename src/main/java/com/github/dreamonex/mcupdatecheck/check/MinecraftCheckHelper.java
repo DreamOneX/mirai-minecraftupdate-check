@@ -37,12 +37,12 @@ public class MinecraftCheckHelper {
         jsonNode = objectMapper.readTree(url);
         JsonNode node = jsonNode.get("latest");
         switch(ver) {
-        case MC_RELEASE:
-            return node.get("release").asText();
-        case MC_SNAPSHOT:
-            return node.get("snapshot").asText();
-        default:
-            throw new IllegalArgumentException("Invalid check type");
+            case MC_RELEASE:
+                node.get("release").asText();
+            case MC_SNAPSHOT:
+                return node.get("snapshot").asText();
+            default:
+                throw new IllegalArgumentException("Invalid check type");
         }
     }
 }

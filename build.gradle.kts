@@ -9,6 +9,16 @@ plugins {
 group = "com.github.dreamonex.mcupdatecheck"
 version = "0.0.1"
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17      
+}
+
+mirai {
+  coreVersion = "2.12.0"
+  jvmTarget = JavaVersion.VERSION_17
+}
+
 repositories {
     maven("https://maven.aliyun.com/repository/public") // 阿里云国内代理仓库
     mavenCentral()
