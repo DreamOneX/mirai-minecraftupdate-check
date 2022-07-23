@@ -22,19 +22,20 @@ import net.mamoe.mirai.console.command.java.JCompositeCommand;
 import java.util.Map;
 import java.util.List;
 
-import com.github.dreamonex.mcupdatecheck.MCUpdateCheckMain;
 import com.github.dreamonex.mcupdatecheck.utils.CheckType;
 import com.github.dreamonex.mcupdatecheck.utils.DataManager;
+import com.github.dreamonex.mcupdatecheck.MCUpdateCheckMain;
 
-public class SubscribeCommand extends JCompositeCommand {
+public final class SubscribeCommand extends JCompositeCommand {
     public static final SubscribeCommand INSTANCE = new SubscribeCommand();
+
     private SubscribeCommand() {
         super(MCUpdateCheckMain.INSTANCE, "subupdate");
         setDescription("订阅更新提醒");
     }
 
     @SubCommand("minecraft")
-    public void onCommandMinecraft(CommandContext context, CheckType type) {
+    public void onCommandMinecraft(final CommandContext context, CheckType type) {
         Long id = context.getSender().getSubject().getId();
         Map<Long, List<CheckType>> data = DataManager.getGroups();
         if (data.get(id) != null) {

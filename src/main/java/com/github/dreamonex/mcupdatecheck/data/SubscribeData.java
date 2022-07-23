@@ -22,11 +22,11 @@ import java.util.HashMap;
 
 import com.github.dreamonex.mcupdatecheck.utils.CheckType;
 
-import net.mamoe.mirai.console.data.java.JavaAutoSavePluginData;
 import net.mamoe.mirai.console.data.Value;
+import net.mamoe.mirai.console.data.java.JavaAutoSavePluginData;
 
 
-public class SubscribeData extends JavaAutoSavePluginData {
+public final class SubscribeData extends JavaAutoSavePluginData {
     public static final SubscribeData INSTANCE = new SubscribeData();
 
     public final Value<String> latestMinecraftRelease = value("latestMinecraftRelease", "1.19");
@@ -44,4 +44,3 @@ public class SubscribeData extends JavaAutoSavePluginData {
         super("SubscribeData");
     }
 }
-

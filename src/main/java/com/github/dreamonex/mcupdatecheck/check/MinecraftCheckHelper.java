@@ -16,28 +16,25 @@
 
 package com.github.dreamonex.mcupdatecheck.check;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.io.IOException;
 import com.fasterxml.jackson.databind.*;
+import com.github.dreamonex.mcupdatecheck.MCUpdateCheckMain;
 import com.github.dreamonex.mcupdatecheck.utils.CheckType;
 
 public class MinecraftCheckHelper {
-    public static String getVersion(CheckType ver) {
+    public static String getVersion(CheckType ver) throws IOException {
         URL url;
         try {
             url = new URL("https://launchermeta.mojang.com/mc/game/version_manifest.json");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "failed";
+        } catch (MalformedURLException e) {
+            MCUpdateCheckMain.INSTANCE.getLogger().error(e);
+            return "我超！神奇的事情发生了";
         }
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode;
-        try {
-            jsonNode = objectMapper.readTree(url);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "failed";
-        }
+        jsonNode = objectMapper.readTree(url);
         JsonNode node = jsonNode.get("latest");
         switch(ver) {
         case MC_RELEASE:

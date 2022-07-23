@@ -21,12 +21,15 @@ import net.mamoe.mirai.console.command.java.JCompositeCommand;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
+import java.io.IOException;
+
 import com.github.dreamonex.mcupdatecheck.MCUpdateCheckMain;
 import com.github.dreamonex.mcupdatecheck.check.MinecraftCheckHelper;
 import com.github.dreamonex.mcupdatecheck.utils.CheckType;
 
 public final class CheckMCCommand extends JCompositeCommand {
     public static final CheckMCCommand INSTANCE = new CheckMCCommand();
+
     private CheckMCCommand() {
         super(MCUpdateCheckMain.INSTANCE, "checkver");
         setDescription("检查版本");
@@ -43,7 +46,14 @@ public final class CheckMCCommand extends JCompositeCommand {
             .append(e.getMessage())
             .build();
             context.getSender().sendMessage(chain);
-            e.printStackTrace();
+            MCUpdateCheckMain.INSTANCE.getLogger().error(e);
+        } catch (IOException e) {
+            MessageChain chain = new MessageChainBuilder()
+                .append("IO异常，可能是网络原因")
+                .append(e.getMessage())
+                .build();
+            context.getSender().sendMessage(chain);
+            MCUpdateCheckMain.INSTANCE.getLogger().error(e);
         }
     }
 }

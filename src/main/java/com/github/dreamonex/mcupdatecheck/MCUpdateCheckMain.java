@@ -35,13 +35,34 @@ import com.github.dreamonex.mcupdatecheck.handlers.BotOnlineHandler;
 
 public final class MCUpdateCheckMain extends JavaPlugin {
     public static final MCUpdateCheckMain INSTANCE = new MCUpdateCheckMain();
-    public List<Bot> bots = new ArrayList<Bot>();
+    private List<Bot> bots = new ArrayList<>();
+
     private MCUpdateCheckMain() {
-        super(new JvmPluginDescriptionBuilder("com.github.dreamonex.mcupdatecheck", "0.0.1")
+        super(
+            new JvmPluginDescriptionBuilder(
+                "com.github.dreamonex.mcupdatecheck", 
+                "0.0.1"
+            )
               .name("MinecraftUpdateChecker")
               .author("DreamOnex")
               .info("Minecraft Update Checker")
               .build());
+    }
+
+    public void addBot(Bot bot) {
+        if (!this.bots.contains(bot)) {
+            this.bots.add(bot);
+        }
+    }
+    
+    public void removeBot(Bot bot) {
+        if (this.bots.contains(bot)) {
+            this.bots.remove(bot);
+        }
+    }
+
+    public List<Bot> getBots() {
+        return this.bots;
     }
 
     @Override
