@@ -45,13 +45,13 @@ public final class MCUpdateCheckMain extends JavaPlugin {
     private MCUpdateCheckMain() {
         super(
             new JvmPluginDescriptionBuilder(
-                "com.github.dreamonex.mcupdatecheck", 
+                "com.github.dreamonex.mcupdatecheck",
                 "0.0.1"
             )
-              .name("MinecraftUpdateChecker")
-              .author("DreamOnex")
-              .info("Minecraft Update Checker")
-              .build());
+            .name("MinecraftUpdateChecker")
+            .author("DreamOnex")
+            .info("Minecraft Update Checker")
+            .build());
     }
 
     public void addBot(Bot bot) {
@@ -59,7 +59,7 @@ public final class MCUpdateCheckMain extends JavaPlugin {
             this.bots.add(bot);
         }
     }
-    
+
     public void removeBot(Bot bot) {
         if (this.bots.contains(bot)) {
             this.bots.remove(bot);

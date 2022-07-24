@@ -25,7 +25,7 @@ import com.github.dreamonex.mcupdatecheck.utils.CheckType;
 import com.github.dreamonex.mcupdatecheck.utils.DataManager;
 
 public class MinecraftCheckHelper {
-    public static String getVersion(CheckType ver) throws IOException {
+    public static synchronized String getVersion(CheckType ver) throws IOException {
         URL url;
         try {
             url = new URL("https://launchermeta.mojang.com/mc/game/version_manifest.json");
