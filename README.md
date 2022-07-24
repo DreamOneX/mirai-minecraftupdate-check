@@ -10,4 +10,7 @@
 2. MC_SNAPSHOT
 
 ## 贡献本项目
-* 行为规范遵循[贡献者公约](./CODE_OF_CONDUCT.md)  
+* 行为规范遵循[贡献者公约](./CODE_OF_CONDUCT.md) 
+
+## 贡献者
+* 阳某贡献了滑稽表情包  
