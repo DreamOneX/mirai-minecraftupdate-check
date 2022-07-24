@@ -8,3 +8,6 @@
 ## CheckType
 1. MC_RELEASE
 2. MC_SNAPSHOT
+
+## 贡献本项目
+* 行为规范遵循[贡献者公约](./CODE_OF_CONDUCT.md)  
