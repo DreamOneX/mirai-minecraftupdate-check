@@ -81,7 +81,7 @@ public final class MCUpdateCheckMain extends JavaPlugin {
                 );
             } catch (IOException e) {
                 getLogger().error(e);
-                getLogger().error("网络错误，正在重试");
+                getLogger().error("我怎么连不上网了呜呜呜");
                 checkFirstRun();
             }
             DataManager.setFirstRun(false);

@@ -40,7 +40,7 @@ public class CheckTimer {
                     if (target == null) continue;
                     if (group.getValue().contains(CheckType.MC_RELEASE)) {
                         MessageChain chain = new MessageChainBuilder()
-                            .append("Minecraft发布了新的Release版本")
+                            .append("Bugjang 发布了 MC 新的 Release 版本")
                             .append("版本号为: " + latest)
                             .build();
                         target.sendMessage(chain);

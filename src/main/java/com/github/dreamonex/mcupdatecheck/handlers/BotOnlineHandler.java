@@ -24,6 +24,6 @@ public class BotOnlineHandler {
     public static void handle(BotOnlineEvent event) {
         MCUpdateCheckMain.INSTANCE.addBot(event.getBot());
         MCUpdateCheckMain.INSTANCE.getLogger()
-            .info(String.format("已添加Bot %d进入Bot列表", event.getBot().getId()));
+            .info(String.format("已添加智能寄器人 %d进入Bot列表", event.getBot().getId()));
     }
 }
