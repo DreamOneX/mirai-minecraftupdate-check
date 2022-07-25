@@ -49,7 +49,7 @@ public final class CheckMCCommand extends JCompositeCommand {
             MCUpdateCheckMain.INSTANCE.getLogger().error(e);
         } catch (IOException e) {
             MessageChain chain = new MessageChainBuilder()
-                .append("IO异常，可能是网络原因")
+                .append("醒醒你网可能炸啦")
                 .append(e.getMessage())
                 .build();
             context.getSender().sendMessage(chain);

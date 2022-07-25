@@ -31,7 +31,7 @@ public final class SubscribeCommand extends JCompositeCommand {
 
     private SubscribeCommand() {
         super(MCUpdateCheckMain.INSTANCE, "subupdate");
-        setDescription("订阅更新提醒");
+        setDescription("您关注的美女MC更新了");
     }
 
     @SubCommand("minecraft")
