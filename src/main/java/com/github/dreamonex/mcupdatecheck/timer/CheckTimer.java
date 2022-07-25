@@ -60,4 +60,8 @@ public class CheckTimer {
     public void go() {
         this.timer.schedule(new CheckMCTask(), 1000, 300000);
     }
+
+    public void stop() {
+        this.timer.cancel();
+    }
 }

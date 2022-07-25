@@ -18,6 +18,7 @@ package com.github.dreamonex.mcupdatecheck;
 
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.console.command.CommandManager;
+import net.mamoe.mirai.console.internal.MiraiConsoleImplementationBridge.ILoveOmaeKumikoForever;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.event.GlobalEventChannel;
@@ -41,6 +42,7 @@ import com.github.dreamonex.mcupdatecheck.utils.DataManager;
 public final class MCUpdateCheckMain extends JavaPlugin {
     public static final MCUpdateCheckMain INSTANCE = new MCUpdateCheckMain();
     private List<Bot> bots = new ArrayList<>();
+    private CheckTimer checker;
 
     private MCUpdateCheckMain() {
         super(
@@ -87,17 +89,18 @@ public final class MCUpdateCheckMain extends JavaPlugin {
             DataManager.setFirstRun(false);
         }
     }
+
     @Override
     public void onEnable() {
         CommandManager.INSTANCE.registerCommand(CheckMCCommand.INSTANCE, false);
         CommandManager.INSTANCE.registerCommand(SubscribeCommand.INSTANCE, false);
         reloadPluginData(SubscribeData.INSTANCE);
         checkFirstRun();
-        CheckTimer checker = new CheckTimer();
+        this.checker = new CheckTimer();
         GlobalEventChannel.INSTANCE.subscribeOnce(
             BotOnlineEvent.class,
             event -> {
-                checker.go();
+                this.checker.go();
             }
         );
         GlobalEventChannel.INSTANCE.subscribeAlways(
@@ -108,5 +111,10 @@ public final class MCUpdateCheckMain extends JavaPlugin {
             BotOfflineEvent.class,
             BotOfflineHandler::handle
         );
+    }
+
+    @Override
+    public void onDisable() {
+        this.checker.stop();
     }
 }
