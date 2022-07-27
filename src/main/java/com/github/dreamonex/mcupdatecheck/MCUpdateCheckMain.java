@@ -1,6 +1,6 @@
 // Mirai Minecraft Update Checker
 // This file is part of Mirai Minecraft Update Checker
-//  Copyright (C) 2022 DreamOneX
+//  Copyright (C) 2022 DreamOneX <me@dreamonex.eu.org> and contributors
 //
 //  Mirai Minecraft Update Checker is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU Affero General Public License as
