@@ -65,9 +65,35 @@ public class CheckTimer {
                 }
             }
         }
+        private void checkMCSnapshot() {
+            String latestold = DataManager.getLatestMinecraftSnapshot();
+            String latest;
+            try {
+                latest = MinecraftCheckHelper.getVersion(CheckType.MC_SNAPSHOT);
+            } catch (IOException e) {
+                MCUpdateCheckMain.INSTANCE.getLogger().error("疑似网络问题", e);
+                return;
+            }
+            if (latestold.equals(latest)) return;
+            DataManager.setLatestMinecraftSnapshot(latest);
+            for (Bot bot : MCUpdateCheckMain.INSTANCE.getBots()) {
+                for (Map.Entry<Long, List<CheckType>> group : this.groups.entrySet()) {
+                    Group target = bot.getGroup(group.getKey());
+                    if (target == null) continue;
+                    if (group.getValue().contains(CheckType.MC_SNAPSHOT)) {
+                        MessageChain chain = new MessageChainBuilder()
+                            .append("Bugjang 发布了 MC 新的 Snapshot 版本")
+                            .append("版本号为: " + latest)
+                            .build();
+                        target.sendMessage(chain);
+                    }
+                }
+            }
+        }
         public void run() {
             freshGroups();
             checkMCRelease();
+            checkMCSnapshot();
         }
     }
     public CheckTimer() {
