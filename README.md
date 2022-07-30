@@ -28,3 +28,9 @@
 ## License
 
 [![AGPL v3](http://www.gnu.org/graphics/agplv3-with-text-162x68.png)](./LICENSE)
+
+## Thanks
+
+* [Mojang](https://www.mojang.com)
+* [Jackson](https://github.com/FasterXML/jackson)
+* [mirai](https://github.com/mamoe/mirai)

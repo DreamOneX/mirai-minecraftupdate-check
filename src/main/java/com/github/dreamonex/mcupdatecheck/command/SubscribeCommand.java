@@ -45,5 +45,6 @@ public final class SubscribeCommand extends JCompositeCommand {
             data.put(id, List.of(type));
         }
         DataManager.setGroups(data);
+        context.getSender().sendMessage("成功订阅" + type.toString() + "更新");
     }
 }
